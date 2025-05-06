@@ -1,5 +1,3 @@
-// index.js
-import express from 'express';
 import pkg from '@whiskeysockets/baileys'
 const {
   default: makeWASocket,
@@ -7,13 +5,26 @@ const {
   fetchLatestBaileysVersion
 } = pkg
 
+import express from 'express'
 import qrcode from 'qrcode-terminal'
 import { createClient } from '@supabase/supabase-js'
 import { useMultiFileAuthState } from '@whiskeysockets/baileys'
 
+// ─── Express Setup ────────────────────────────────────────────────────────────
+const app = express()
+const PORT = process.env.PORT || 8080
+
+app.get('/', (req, res) => {
+  res.send('✅ Baileys bot is running!')
+})
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`)
+})
+
 // ─── Supabase Setup ────────────────────────────────────────────────────────────
 const supabaseUrl     = 'https://bwfmzqktiocbhrsmxvvi.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3Zm16cWt0aW9jYmhyc214dnZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyNDc4MjYsImV4cCI6MjA2MTgyMzgyNn0.Uut5SCy2SsUdddA-IuKd1F8hvIC9f9-SHmVCLD2_XrQ'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3Zm16cWt0aW9jYmhyc214dnZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyNDc4MjYsImV4cCI6MjA2MTgyMzgyNn0.Uut5SCy2SsUdddA-IuKd1F8hvIC9f9-SHmVCLD2_XrQ'  // Replace with your actual key
 const supabase        = createClient(supabaseUrl, supabaseAnonKey)
 
 // ─── Auth State Setup ─────────────────────────────────────────────────────────
@@ -94,14 +105,5 @@ async function startBot() {
     if (error) console.error('❌ Supabase insert error:', error)
   })
 }
-//-----port-----
-// Add this at the top
-
-const app = express();
-
-// Add this at the bottom of the file
-const PORT = process.env.PORT || 3000;
-app.get('/', (req, res) => res.send('✅ Baileys bot is running!'));
-app.listen(PORT, () => console.log(`🌐 Server listening on port ${PORT}`));
 
 startBot()

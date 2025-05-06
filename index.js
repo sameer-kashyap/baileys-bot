@@ -11,8 +11,8 @@ import { createClient } from '@supabase/supabase-js'
 import { useMultiFileAuthState } from '@whiskeysockets/baileys'
 
 // ─── Supabase Setup ────────────────────────────────────────────────────────────
-const supabaseUrl     = 'https://bwfmzqktiocbhrsmxvvi.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3Zm16cWt0aW9jYmhyc214dnZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyNDc4MjYsImV4cCI6MjA2MTgyMzgyNn0.Uut5SCy2SsUdddA-IuKd1F8hvIC9f9-SHmVCLD2_XrQ'
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY
 const supabase        = createClient(supabaseUrl, supabaseAnonKey)
 
 // ─── Auth State Setup ─────────────────────────────────────────────────────────

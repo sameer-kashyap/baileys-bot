@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+.env
+auth_info/
+session.json
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs
+.vscode/
+.idea/

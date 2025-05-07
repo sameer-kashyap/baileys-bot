@@ -106,4 +106,17 @@ async function startBot() {
   })
 }
 
+//bailey bot error fix 
+
+const application = express();
+
+application.get('/', (req, res) => {
+  res.send('Baileys bot is running.');
+});
+
+const PORTING = process.env.PORT || 3000;
+app.listen(PORTING, () => {
+  console.log(`Web server running on port ${PORTING}`);
+});
+
 startBot()

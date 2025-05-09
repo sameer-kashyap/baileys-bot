@@ -23,8 +23,8 @@ app.listen(PORT, () => {
 })
 
 // ─── Supabase Setup ────────────────────────────────────────────────────────────
-const supabaseUrl     = 'https://maidiepqrcyxmvapvins.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1haWRpZXBxcmN5eG12YXB2aW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2NDA3MjgsImV4cCI6MjA2MjIxNjcyOH0.F7IxgNJFZ2ixcGtZmCveuk_aoqpX7xOolulRPM6QefE'  // Replace with your actual key
+const supabaseUrl     = 'https://zpzwkdhfhfrdtcbwimbc.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwendrZGhmaGZyZHRjYndpbWJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3NzUwMzksImV4cCI6MjA2MjM1MTAzOX0.CexMgQ17b-tEd0s5V12N77ha5e8dIzvikKOms5nhOyo'
 const supabase        = createClient(supabaseUrl, supabaseAnonKey)
 
 // ─── Auth State Setup ─────────────────────────────────────────────────────────
@@ -58,7 +58,7 @@ async function startBot() {
     }
   })
 
-  // 🟡 Periodic check for due reminders
+  // 🔁 Process scheduled reminders from 'reminders' table
   setInterval(async () => {
     const { data: reminders, error } = await supabase
       .from('reminders')
@@ -86,9 +86,34 @@ async function startBot() {
         console.error('❌ Failed to send reminder:', err)
       }
     }
-  }, 60 * 1000)
+  }, 60 * 1000) // every minute
 
-  // 🔁 Incoming messages logging (optional)
+  // 🔁 Dues reminder from 'members' table (every 4 hours)
+  setInterval(async () => {
+    const { data: members, error } = await supabase
+      .from('members')
+      .select('id, full_name, phone, due')
+      .gt('due', 0)
+
+    if (error) {
+      console.error('❌ Error fetching due members:', error)
+      return
+    }
+
+    for (const member of members) {
+      try {
+        const number = member.phone.replace(/\D/g, '') + '@s.whatsapp.net'
+        const message = `Hi ${member.full_name}, you have ₹${member.due} pending at MM Fitness. Kindly clear it soon. Thank you! 💪`
+
+        await sock.sendMessage(number, { text: message })
+        console.log(`📤 Sent due reminder to ${member.full_name}: ₹${member.due}`)
+      } catch (err) {
+        console.error('❌ Failed to send due reminder:', err)
+      }
+    }
+  }, 4 * 60 * 60 * 1000) // every 4 hours
+
+  // 🔁 Log incoming messages to Supabase
   sock.ev.on('messages.upsert', async ({ messages }) => {
     const msg = messages[0]
     if (!msg.message) return
@@ -105,18 +130,5 @@ async function startBot() {
     if (error) console.error('❌ Supabase insert error:', error)
   })
 }
-
-//bailey bot error fix 
-
-const application = express();
-
-application.get('/', (req, res) => {
-  res.send('Baileys bot is running.');
-});
-
-const PORTING = process.env.PORT || 3000;
-app.listen(PORTING, () => {
-  console.log(`Web server running on port ${PORTING}`);
-});
 
 startBot()

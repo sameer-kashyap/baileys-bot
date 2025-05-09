@@ -23,8 +23,8 @@ app.listen(PORT, () => {
 })
 
 // ─── Supabase Setup ────────────────────────────────────────────────────────────
-const supabaseUrl     = 'https://bwfmzqktiocbhrsmxvvi.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3Zm16cWt0aW9jYmhyc214dnZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYyNDc4MjYsImV4cCI6MjA2MTgyMzgyNn0.Uut5SCy2SsUdddA-IuKd1F8hvIC9f9-SHmVCLD2_XrQ'  // Replace with your actual key
+const supabaseUrl     = 'https://maidiepqrcyxmvapvins.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1haWRpZXBxcmN5eG12YXB2aW5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2NDA3MjgsImV4cCI6MjA2MjIxNjcyOH0.F7IxgNJFZ2ixcGtZmCveuk_aoqpX7xOolulRPM6QefE'  // Replace with your actual key
 const supabase        = createClient(supabaseUrl, supabaseAnonKey)
 
 // ─── Auth State Setup ─────────────────────────────────────────────────────────
